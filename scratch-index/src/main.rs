@@ -169,7 +169,11 @@ fn main() {
     let mut all_projects = project_info.clone();
     all_projects.sort_by(|a, b| a.name.cmp(&b.name));
 
-    println!("This is a scratchpad repo for sketches and small experiments.\n\n");
+    println!("This is a scratchpad repo for sketches and small experiments.");
+    println!("");
+    println!("* GitHub repo: https://github.com/miikka/scratch");
+    println!("* HTML pages: https://miikka.github.io/scratch/");
+    println!("");
 
     println!("## Last updated sketches\n");
     for project in recent_projects {
