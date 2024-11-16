@@ -1,0 +1,43 @@
+<!doctype html>
+<script>
+    function updateContent() {
+        document.getElementById("output").innerHTML =
+            document.getElementById("input").innerText;
+    }
+</script>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        font-family: Menlo, monospace;
+    }
+
+    [contenteditable]:focus {
+        outline: 0px solid transparent;
+    }
+</style>
+<body
+    style="display: flex; flex-direction: column; gap: 10px"
+    onload="updateContent(event)"
+>
+    <div id="output" style="min-height: 100px">i'm the output</div>
+    <div
+        id="input"
+        contenteditable="true"
+        onkeyup="updateContent(event)"
+        style="
+            background-color: hsl(40, 50%, 90%);
+            border-top: 3px solid hsl(40, 50%, 80%);
+            flex-grow: 1;
+        "
+    >
+        &lt;h1&gt;hello&lt;/h1&gt;
+    </div>
+</body>

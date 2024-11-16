@@ -39,6 +39,9 @@ impl ProjectInfo {
                     } else if file_name == "Cargo.toml" {
                         language = String::from("Rust");
                         break;
+                    } else if file_name == "index.html" {
+                        language = String::from("HTML");
+                        break;
                     }
                 }
             }
