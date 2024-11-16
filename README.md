@@ -1,7 +1,7 @@
 This is a scratchpad repo for sketches and small experiments.
 
-* GitHub repo: https://github.com/miikka/scratch
-* HTML pages: https://miikka.github.io/scratch/
+* GitHub repo: <https://github.com/miikka/scratch>
+* HTML pages: <https://miikka.github.io/scratch/>
 
 ## Last updated sketches
 

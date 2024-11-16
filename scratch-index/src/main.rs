@@ -171,8 +171,8 @@ fn main() {
 
     println!("This is a scratchpad repo for sketches and small experiments.");
     println!("");
-    println!("* GitHub repo: https://github.com/miikka/scratch");
-    println!("* HTML pages: https://miikka.github.io/scratch/");
+    println!("* GitHub repo: <https://github.com/miikka/scratch>");
+    println!("* HTML pages: <https://miikka.github.io/scratch/>");
     println!("");
 
     println!("## Last updated sketches\n");
