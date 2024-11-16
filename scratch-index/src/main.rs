@@ -8,6 +8,10 @@ use std::path::{Path, PathBuf};
 struct Cli {
     /// Path to the scratch repo root
     path: PathBuf,
+
+    /// Filter output by language
+    #[arg(long)]
+    only_language: Option<String>,
 }
 
 #[derive(Clone, Debug)]
@@ -148,6 +152,14 @@ fn main() {
         }
     }
 
+    // Filter by tag if specified
+    if let Some(ref language) = cli.only_language {
+        project_info = project_info
+            .into_iter()
+            .filter(|p| &p.language == language)
+            .collect();
+    }
+
     // Sort by last modified for recent projects
     let mut recent_projects = project_info.clone();
     recent_projects.sort_by(|a, b| b.last_modified.cmp(&a.last_modified));
@@ -169,23 +181,25 @@ fn main() {
         print_project_list_item(&project);
     }
 
-    println!("\n## Sketches by language");
+    if cli.only_language.is_none() {
+        println!("\n## Sketches by language");
 
-    let mut languages: Vec<String> = project_info.iter().map(|p| p.language.clone()).collect();
-    languages.sort();
-    languages.dedup();
+        let mut languages: Vec<String> = project_info.iter().map(|p| p.language.clone()).collect();
+        languages.sort();
+        languages.dedup();
 
-    for language in languages {
-        println!();
-        println!("### {}\n", language);
-        let mut projects: Vec<&ProjectInfo> = project_info
-            .iter()
-            .filter(|p| p.language == language)
-            .collect();
-        projects.sort_by(|a, b| a.name.cmp(&b.name));
+        for language in languages {
+            println!();
+            println!("### {}\n", language);
+            let mut projects: Vec<&ProjectInfo> = project_info
+                .iter()
+                .filter(|p| p.language == language)
+                .collect();
+            projects.sort_by(|a, b| a.name.cmp(&b.name));
 
-        for project in projects {
-            print_project_list_item(project);
+            for project in projects {
+                print_project_list_item(project);
+            }
         }
     }
 

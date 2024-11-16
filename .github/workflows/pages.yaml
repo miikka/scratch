@@ -9,16 +9,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
 
-      - name: Convert README to html
+      - name: Generate index.md
+        run: |
+          cd scratch-index && cargo run -- .. --only-language HTML > ../index.md
+
+      - name: Convert index.md to html
         uses: docker://pandoc/core:3.5
         with:
           args: >-
             --standalone
             --output=index.html
-            README.md
+            index.md
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
