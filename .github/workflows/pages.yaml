@@ -14,7 +14,9 @@ jobs:
 
       - name: Generate index.md
         run: |
-          cd scratch-index && cargo run -- .. --only-language HTML > ../index.md
+          cd scratch-index
+          cargo run -- .. --only-language HTML > ../index.md
+          rm -rf target
 
       - name: Convert index.md to html
         uses: docker://pandoc/core:3.5
