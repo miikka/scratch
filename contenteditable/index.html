@@ -3,6 +3,17 @@
     function updateContent() {
         document.getElementById("output").innerHTML =
             document.getElementById("input").innerText;
+        localStorage.setItem(
+            "savedText",
+            document.getElementById("input").innerText,
+        );
+    }
+
+    function onLoad() {
+        document.getElementById("input").innerText =
+            localStorage.getItem("savedText") ||
+            document.getElementById("input").innerText;
+        updateContent();
     }
 </script>
 <style>
@@ -25,7 +36,7 @@
 </style>
 <body
     style="display: flex; flex-direction: column; gap: 10px"
-    onload="updateContent(event)"
+    onload="onLoad(event)"
 >
     <div id="output" style="min-height: 100px">i'm the output</div>
     <div
