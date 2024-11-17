@@ -5,6 +5,7 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Last updated sketches
 
+- [cable-car](cable-car) - Emoji cable car. (HTML)
 - [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
 - [contenteditable](contenteditable) - Playing around with `contenteditable` HTML elements. (HTML)
 - [malloc](malloc) - How do you allocate memory? (Rust)
@@ -12,6 +13,7 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## All sketches
 
+- [cable-car](cable-car) - Emoji cable car. (HTML)
 - [contenteditable](contenteditable) - Playing around with `contenteditable` HTML elements. (HTML)
 - [malloc](malloc) - How do you allocate memory? (Rust)
 - [python-reload](python-reload) - Attempt to reload Python code without restarting the interpreter. (Python)
@@ -21,6 +23,7 @@ This is a scratchpad repo for sketches and small experiments.
 
 ### HTML
 
+- [cable-car](cable-car) - Emoji cable car. (HTML)
 - [contenteditable](contenteditable) - Playing around with `contenteditable` HTML elements. (HTML)
 
 ### Python
