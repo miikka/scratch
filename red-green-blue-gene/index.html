@@ -1,0 +1,106 @@
+<!doctype html>
+<canvas
+    width="640"
+    height="640"
+    style="background-color: black"
+    id="canvas"
+></canvas>
+<script>
+    let intervalId = null;
+
+    const offsets = [
+        [-1, -1],
+        [-1, 0],
+        [-1, 1],
+        [0, -1],
+        [0, 1],
+        [1, -1],
+        [1, 0],
+        [1, 1],
+    ];
+
+    function mutate(x) {
+        const d = 10;
+        return Math.min(
+            255,
+            Math.max(x + Math.floor(Math.random() * d - d / 2), 0),
+        );
+    }
+
+    function tick() {
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const newPixels = imageData.data;
+        const oldPixels = new Uint8ClampedArray(newPixels);
+
+        let count = 0;
+        for (let y = 1; y < canvas.height - 1; y++) {
+            for (let x = 1; x < canvas.width - 1; x++) {
+                const offset = (y * imageData.width + x) * 4;
+
+                if (
+                    oldPixels[offset] > 0 ||
+                    oldPixels[offset + 1] > 0 ||
+                    oldPixels[offset + 2] > 0
+                ) {
+                    continue;
+                }
+
+                // Should consider here multiple parents so that there would be some color mixing between
+                // the start rects!
+                const [dx, dy] =
+                    offsets[Math.floor(Math.random() * offsets.length)];
+                const o = ((y + dy) * imageData.width + (x + dx)) * 4;
+
+                if (
+                    oldPixels[o] == 0 &&
+                    oldPixels[o + 1] == 0 &&
+                    oldPixels[o + 2] == 0
+                )
+                    continue;
+
+                count++;
+
+                for (let i = 0; i < 3; i++) {
+                    //console.log("offset", x, y, x + dx, y + dy);
+                    newPixels[offset + i] = mutate(oldPixels[o + i]);
+                }
+                newPixels[offset + 3] = 255;
+            }
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+
+        if (count == 0) {
+            console.log("Stopping");
+            clearInterval(intervalId);
+        }
+    }
+
+    function paintRandomRect(ctx) {
+        const hue = Math.floor(Math.random() * 360);
+        const lightness = 40 + Math.floor(Math.random() * 30);
+        const size = 20;
+
+        const x = size + Math.floor(Math.random() * (canvas.width - 2 * size));
+        const y = size + Math.floor(Math.random() * (canvas.height - 2 * size));
+
+        ctx.fillStyle = `hsl(${hue}, 75%, ${lightness}%)`;
+        ctx.fillRect(x, y, size, size);
+    }
+
+    function start() {
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        for (let i = 0; i < 3; i++) {
+            paintRandomRect(ctx);
+        }
+
+        intervalId = setInterval(tick, 10);
+    }
+
+    document.addEventListener("DOMContentLoaded", start);
+</script>
