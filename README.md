@@ -5,14 +5,15 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Last updated sketches
 
+- [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [red-green-blue-gene](red-green-blue-gene) - Generate colorful graphics. (HTML)
 - [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
 - [cable-car](cable-car) - Emoji cable car. (HTML)
 - [contenteditable](contenteditable) - Playing around with `contenteditable` HTML elements. (HTML)
-- [malloc](malloc) - How do you allocate memory? (Rust)
 
 ## All sketches
 
+- [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [cable-car](cable-car) - Emoji cable car. (HTML)
 - [contenteditable](contenteditable) - Playing around with `contenteditable` HTML elements. (HTML)
 - [malloc](malloc) - How do you allocate memory? (Rust)
@@ -30,6 +31,7 @@ This is a scratchpad repo for sketches and small experiments.
 
 ### Python
 
+- [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [python-reload](python-reload) - Attempt to reload Python code without restarting the interpreter. (Python)
 
 ### Rust
@@ -42,6 +44,7 @@ This is a scratchpad repo for sketches and small experiments.
 ### ai-generated
 
 - [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
+- [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 
 ### meta
 

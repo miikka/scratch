@@ -46,6 +46,8 @@ impl ProjectInfo {
                     } else if file_name == "index.html" {
                         language = String::from("HTML");
                         break;
+                    } else if file_name.to_string_lossy().ends_with(".py") {
+                        language = String::from("Python");
                     }
                 }
             }
