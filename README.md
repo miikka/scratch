@@ -5,17 +5,18 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Last updated sketches
 
+- [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [red-green-blue-gene](red-green-blue-gene) - Generate colorful graphics. (HTML)
 - [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
 - [cable-car](cable-car) - Emoji cable car. (HTML)
-- [contenteditable](contenteditable) - Playing around with `contenteditable` HTML elements. (HTML)
 
 ## All sketches
 
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [cable-car](cable-car) - Emoji cable car. (HTML)
 - [contenteditable](contenteditable) - Playing around with `contenteditable` HTML elements. (HTML)
+- [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
 - [malloc](malloc) - How do you allocate memory? (Rust)
 - [python-reload](python-reload) - Attempt to reload Python code without restarting the interpreter. (Python)
 - [red-green-blue-gene](red-green-blue-gene) - Generate colorful graphics. (HTML)
@@ -36,6 +37,7 @@ This is a scratchpad repo for sketches and small experiments.
 
 ### Rust
 
+- [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
 - [malloc](malloc) - How do you allocate memory? (Rust)
 - [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
 
