@@ -47,7 +47,7 @@ pub fn encode(input: &[f64]) -> Bytes {
         let xor = prev_bits ^ curr_bits;
         if xor == 0 {
             stream.put_bit(0);
-            println!("control 0");
+            // println!("control 0");
         } else {
             stream.put_bit(1);
             let leading = leading_zeros(xor);
@@ -55,12 +55,12 @@ pub fn encode(input: &[f64]) -> Bytes {
             let meaningful = xor >> trailing;
 
             if leading >= prev_leading && trailing == prev_trailing {
-                println!("control 10");
+                // println!("control 10");
                 stream.put_bit(0);
                 let meaningful_len = 64 - prev_leading - prev_trailing;
                 stream.put_u64_lowest_bits(meaningful, meaningful_len);
             } else {
-                println!("control 11");
+                // println!("control 11");
                 stream.put_bit(1);
 
                 stream.put_u64_lowest_bits(leading as u64, 5);
@@ -69,10 +69,10 @@ pub fn encode(input: &[f64]) -> Bytes {
                 stream.put_u64_lowest_bits(meaningful_len as u64, 6);
                 stream.put_u64_lowest_bits(meaningful, meaningful_len);
 
-                println!(
-                    "leading {} xor_length {} xor {:b}",
-                    leading, meaningful_len, meaningful
-                );
+                // println!(
+                //     "leading {} xor_length {} xor {:b}",
+                //     leading, meaningful_len, meaningful
+                // );
 
                 prev_leading = leading;
                 prev_trailing = trailing;
@@ -99,10 +99,10 @@ pub fn decode(input: &[u8], count: usize) -> Vec<f64> {
 
     for _ in 1..count {
         if stream.read_bit() == 0 {
-            println!("control 0");
+            // println!("control 0");
             result.push(prev)
         } else if stream.read_bit() == 0 {
-            println!("control 10");
+            // println!("control 10");
             let xor = stream.read_u64_lowest_bits(64 - prev_leading - prev_trailing);
             let curr_bits = prev_bits ^ (xor << prev_trailing);
             let curr = f64::from_bits(curr_bits);
@@ -110,7 +110,7 @@ pub fn decode(input: &[u8], count: usize) -> Vec<f64> {
             prev = curr;
             prev_bits = curr_bits;
         } else {
-            println!("control 11");
+            // println!("control 11");
             let leading = stream.read_u64_lowest_bits(5) as u8;
             let mut xor_length = stream.read_u64_lowest_bits(6) as u8;
 
@@ -120,10 +120,10 @@ pub fn decode(input: &[u8], count: usize) -> Vec<f64> {
 
             let xor = stream.read_u64_lowest_bits(xor_length);
 
-            println!(
-                "leading {} xor_length {} xor {:b}",
-                leading, xor_length, xor
-            );
+            // println!(
+            //     "leading {} xor_length {} xor {:b}",
+            //     leading, xor_length, xor
+            // );
             let trailing = 64 - leading - xor_length;
             let curr_bits = prev_bits ^ (xor << trailing);
             let curr = f64::from_bits(curr_bits);
