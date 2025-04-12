@@ -1,4 +1,5 @@
 mod bits;
+pub mod chimp128;
 
 use bits::{Bitread, Bitwrite};
 use bytes::{Bytes, BytesMut};
