@@ -5,11 +5,11 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Last updated sketches
 
-- [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
+- [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
 - [chimp](chimp) - Floating point compression with the [Chimp] algorithm by Liakos et al. (Rust)
+- [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [red-green-blue-gene](red-green-blue-gene) - Generate colorful graphics. (HTML)
-- [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
 
 ## All sketches
 
@@ -19,6 +19,7 @@ This is a scratchpad repo for sketches and small experiments.
 - [contenteditable](contenteditable) - Playing around with `contenteditable` HTML elements. (HTML)
 - [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
 - [malloc](malloc) - How do you allocate memory? (Rust)
+- [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
 - [python-reload](python-reload) - Attempt to reload Python code without restarting the interpreter. (Python)
 - [red-green-blue-gene](red-green-blue-gene) - Generate colorful graphics. (HTML)
 - [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
@@ -41,6 +42,7 @@ This is a scratchpad repo for sketches and small experiments.
 - [chimp](chimp) - Floating point compression with the [Chimp] algorithm by Liakos et al. (Rust)
 - [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
 - [malloc](malloc) - How do you allocate memory? (Rust)
+- [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
 - [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
 
 ## Sketches by tag
@@ -54,6 +56,7 @@ This is a scratchpad repo for sketches and small experiments.
 
 - [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
 - [chimp](chimp) - Floating point compression with the [Chimp] algorithm by Liakos et al. (Rust)
+- [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
 
 ### meta
 
