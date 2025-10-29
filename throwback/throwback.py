@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import List, Tuple
 
 
-HEADER_LINE = "## Time Capsule"
+HEADER_LINE = "## Aikakapseli"
 
 
 def subtract_months(source: dt.date, months: int) -> dt.date:
@@ -39,13 +39,13 @@ def formatted_link(diary_dir: str, target_date: dt.date) -> str:
 def gather_targets(today: dt.date) -> List[Tuple[str, dt.date]]:
     targets: List[Tuple[str, dt.date]] = []
 
-    targets.append(("1 month ago", subtract_months(today, 1)))
-    targets.append(("3 months ago", subtract_months(today, 3)))
-    targets.append(("1 year ago", subtract_years(today, 1)))
+    targets.append(("1 kuukausi sitten", subtract_months(today, 1)))
+    targets.append(("3 kuukautta sitten", subtract_months(today, 3)))
+    targets.append(("1 vuosi sitten", subtract_years(today, 1)))
 
     years_back = 2
     while today.year - years_back >= 2022:
-        targets.append((f"{years_back} years ago", subtract_years(today, years_back)))
+        targets.append((f"{years_back} vuotta sitten", subtract_years(today, years_back)))
         years_back += 1
 
     return targets
