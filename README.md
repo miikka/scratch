@@ -6,10 +6,10 @@ This is a scratchpad repo for sketches and small experiments.
 ## Last updated sketches
 
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
+- [throwback](throwback) - Add links to old diary entries in your Obsidian daily note. (Python)
 - [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
 - [chimp](chimp) - Floating point compression with the [Chimp] algorithm by Liakos et al. (Rust)
 - [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
-- [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 
 ## All sketches
 
@@ -24,6 +24,7 @@ This is a scratchpad repo for sketches and small experiments.
 - [python-reload](python-reload) - Attempt to reload Python code without restarting the interpreter. (Python)
 - [red-green-blue-gene](red-green-blue-gene) - Generate colorful graphics. (HTML)
 - [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
+- [throwback](throwback) - Add links to old diary entries in your Obsidian daily note. (Python)
 
 ## Sketches by language
 
@@ -38,6 +39,7 @@ This is a scratchpad repo for sketches and small experiments.
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 - [python-reload](python-reload) - Attempt to reload Python code without restarting the interpreter. (Python)
+- [throwback](throwback) - Add links to old diary entries in your Obsidian daily note. (Python)
 
 ### Rust
 
@@ -49,9 +51,15 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Sketches by tag
 
+### Obsidian
+
+- [throwback](throwback) - Add links to old diary entries in your Obsidian daily note. (Python)
+- [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
+
 ### ai-generated
 
 - [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
+- [throwback](throwback) - Add links to old diary entries in your Obsidian daily note. (Python)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 
