@@ -44,7 +44,7 @@ def gather_targets(today: dt.date) -> List[Tuple[str, dt.date]]:
     targets.append(("1 vuosi sitten", subtract_years(today, 1)))
 
     years_back = 2
-    while today.year - years_back >= 2022:
+    while today.year - years_back >= 2021:
         targets.append((f"{years_back} vuotta sitten", subtract_years(today, years_back)))
         years_back += 1
 
