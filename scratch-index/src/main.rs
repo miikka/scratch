@@ -217,10 +217,14 @@ fn main() {
         for tag in all_tags {
             println!();
             println!("### {}\n", tag);
-            for project in &project_info {
-                if project.tags.contains(&tag) {
-                    print_project_list_item(project);
-                }
+            let mut projects: Vec<&ProjectInfo> = project_info
+                .iter()
+                .filter(|p| p.tags.contains(&tag))
+                .collect();
+            projects.sort_by(|a, b| a.name.cmp(&b.name));
+
+            for project in projects {
+                print_project_list_item(project);
             }
         }
     }
