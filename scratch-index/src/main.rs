@@ -3,6 +3,8 @@ use clap::Parser;
 use git2::Repository;
 use std::path::{Path, PathBuf};
 
+const IGNORE_DIRS: &'static [&str] = &["target"];
+
 #[derive(Parser, Debug)]
 #[command()]
 struct Cli {
@@ -145,7 +147,7 @@ fn main() {
         if let Ok(entry) = entry {
             if entry.file_type().unwrap().is_dir() {
                 if let Some(file_name) = entry.file_name().to_str() {
-                    if !file_name.starts_with('.') {
+                    if !IGNORE_DIRS.contains(&file_name) && !file_name.starts_with('.') {
                         let info = ProjectInfo::from_dir(&entry.path());
                         project_info.push(info);
                     }

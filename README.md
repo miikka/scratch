@@ -5,8 +5,8 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Last updated sketches
 
-- [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 - [throwback](throwback) - Add links to old diary entries in your Obsidian daily note. (Python)
+- [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 - [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
 - [chimp](chimp) - Floating point compression with the [Chimp] algorithm by Liakos et al. (Rust)
 - [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
