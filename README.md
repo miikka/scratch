@@ -5,16 +5,17 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Last updated sketches
 
+- [cas](cas) - Basic content-addressed storage on top of a file system. (Rust)
 - [omnifocus-done](omnifocus-done) - Add the tasks you've completed today to your Obsidian daily note. (Python)
 - [throwback](throwback) - Add links to old diary entries in your Obsidian daily note. (Python)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 - [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
-- [chimp](chimp) - Floating point compression with the [Chimp] algorithm by Liakos et al. (Rust)
 
 ## All sketches
 
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [cable-car](cable-car) - Emoji cable car. (HTML)
+- [cas](cas) - Basic content-addressed storage on top of a file system. (Rust)
 - [chimp](chimp) - Floating point compression with the [Chimp] algorithm by Liakos et al. (Rust)
 - [contenteditable](contenteditable) - Playing around with `contenteditable` HTML elements. (HTML)
 - [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
@@ -45,6 +46,7 @@ This is a scratchpad repo for sketches and small experiments.
 
 ### Rust
 
+- [cas](cas) - Basic content-addressed storage on top of a file system. (Rust)
 - [chimp](chimp) - Floating point compression with the [Chimp] algorithm by Liakos et al. (Rust)
 - [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
 - [malloc](malloc) - How do you allocate memory? (Rust)
