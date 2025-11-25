@@ -24,10 +24,17 @@ pub enum CasError {
 #[derive(Clone, Debug)]
 pub struct Key(blake3::Hash);
 
+// TODO(miikka) Implement a metadata store for listing the contents
+
+// TODO(miikka) Implement Display for Key
 impl Key {
     pub fn from_hex_str(hex: &str) -> Result<Self, CasError> {
         let hash = blake3::Hash::from_hex(hex)?;
         Ok(Self(hash))
+    }
+
+    pub fn to_hex_str(&self) -> String {
+        self.0.to_string()
     }
 
     fn to_path(&self) -> PathBuf {
@@ -36,9 +43,8 @@ impl Key {
     }
 }
 
-// TODO(miikka) Compress the data before adding
-
 impl Store {
+    // TODO(miikka) The first parameter should accept Path, &str, etc.
     pub fn new(path: &Path) -> Self {
         Store {
             path: PathBuf::from(path),
@@ -46,7 +52,12 @@ impl Store {
     }
 
     pub fn add(&self, data: &[u8]) -> Result<Key, CasError> {
-        let key = blake3::hash(data);
+        // 0 = use zstd's default level
+        // TODO(miikka) Should not compress short strings!
+        let compressed = zstd::stream::encode_all(data, 0)?;
+
+        // Should the files have some sort of metadata? Or does that belong to the metadata store?
+        let key = blake3::hash(&compressed);
         let key_hex = key.to_hex();
         let key_str: &str = &key_hex;
         let key_prefix = &key_hex[0..2];
@@ -57,15 +68,17 @@ impl Store {
         // Not exactly atomic or safe
         if !data_path.exists() {
             let mut file = File::create(&data_path)?;
-            file.write_all(data)?;
+            file.write_all(&compressed)?;
         }
 
         Ok(Key(key))
     }
 
+    // TODO(miikka) Create a variant of get that allows copying the output directly to a writer
     pub fn get(&self, key: &Key) -> Result<Vec<u8>, CasError> {
         let data_path = self.path.join(key.to_path());
-        let data = fs::read(data_path)?;
+        let file = File::open(data_path)?;
+        let data = zstd::stream::decode_all(file)?;
         Ok(data)
     }
 }
@@ -75,14 +88,31 @@ mod tests {
     use super::*;
 
     // TODO(miikka) Oh to do this sans IO
-    // TODO(miikka) Do the tests with an empty temp test directory
+
+    fn get_test_store() -> Store {
+        let store_id: u64 = rand::random();
+        let store_name = format!("test_data/{}", store_id);
+        println!("store directory: {:04}", store_name);
+        Store::new(&PathBuf::from(store_name))
+    }
 
     #[test]
     fn test_add_get() {
-        let store = Store::new(&PathBuf::from("test_data"));
+        let store = get_test_store();
         let bytes = "kissa2".as_bytes();
         let key = store.add(bytes).unwrap();
         let bytes2 = store.get(&key).unwrap();
+        println!("key={:?}", key);
         assert_eq!(bytes, bytes2);
+    }
+
+    #[test]
+    fn test_get_empty() {
+        let key =
+            Key::from_hex_str("871f68ab569985d7003ac89c71d7120d991f69a3064389f149efc299f12a0513")
+                .unwrap();
+        let store = get_test_store();
+        let result = store.get(&key);
+        assert!(result.is_err());
     }
 }
