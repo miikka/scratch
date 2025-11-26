@@ -5,11 +5,13 @@ from __future__ import annotations
 import argparse
 import calendar
 import datetime as dt
+import re
 from pathlib import Path
 from typing import List, Tuple
 
 
 HEADER_LINE = "## Aikakapseli"
+TOOTS_HEADER_LINE = "## Vanhat tuuttaukset"
 
 
 def subtract_months(source: dt.date, months: int) -> dt.date:
@@ -64,6 +66,59 @@ def check_archive_file(vault_path: Path, target_date: dt.date) -> str | None:
     return None
 
 
+def parse_toots(vault_path: Path) -> List[Tuple[dt.date, str, str]]:
+    """Parse Toots.md and extract toots with their dates and URLs.
+
+    Returns a list of tuples: (date, url, preview_text)
+    """
+    toots_file = vault_path / "Toots.md"
+    if not toots_file.exists():
+        return []
+
+    content = toots_file.read_text(encoding="utf-8")
+    toots = []
+
+    # Pattern: [2023-02-25T04:37:28.762Z](URL): <p>content</p>
+    pattern = r'\[(\d{4}-\d{2}-\d{2})T[^\]]+\]\(([^)]+)\):\s*(?:<p>)?([^<\n]+)'
+
+    for match in re.finditer(pattern, content):
+        date_str = match.group(1)
+        url = match.group(2)
+        preview = match.group(3).strip()
+
+        try:
+            toot_date = dt.date.fromisoformat(date_str)
+            toots.append((toot_date, url, preview))
+        except ValueError:
+            continue
+
+    return toots
+
+
+def find_historical_toots(
+    toots: List[Tuple[dt.date, str, str]],
+    targets: List[Tuple[str, dt.date]],
+    today: dt.date
+) -> List[Tuple[str, str, str]]:
+    """Find toots from historical dates.
+
+    Returns a list of tuples: (label, url, preview_text)
+    """
+    historical = []
+
+    for label, target_date in targets:
+        # Only include toots for dates 1+ year ago
+        days_ago = (today - target_date).days
+        if days_ago < 365:
+            continue
+
+        for toot_date, url, preview in toots:
+            if toot_date == target_date:
+                historical.append((label, url, preview))
+
+    return historical
+
+
 def gather_targets(today: dt.date) -> List[Tuple[str, dt.date]]:
     targets: List[Tuple[str, dt.date]] = []
 
@@ -84,9 +139,10 @@ def append_links(
     vault_path: Path,
     diary_dir: str,
     targets: List[Tuple[str, dt.date]],
+    historical_toots: List[Tuple[str, str, str]],
     *,
     dry_run: bool = False,
-) -> int:
+) -> Tuple[int, int]:
     diary_root = today_note.parent
     existing_content = today_note.read_text(encoding="utf-8") if today_note.exists() else ""
 
@@ -94,10 +150,11 @@ def append_links(
     if existing_content and not existing_content.endswith("\n"):
         new_lines.append("")
 
+    # Add diary entries section
     if HEADER_LINE not in existing_content:
         new_lines.extend(["", HEADER_LINE, ""])
 
-    appended = 0
+    diary_appended = 0
     for label, target_date in targets:
         # First check if individual diary note exists
         target_path = diary_root / f"{target_date.isoformat()}.md"
@@ -118,22 +175,37 @@ def append_links(
             continue
 
         new_lines.append(line)
-        appended += 1
+        diary_appended += 1
 
-    if not new_lines or appended == 0:
-        return 0
+    # Add toots section
+    toots_appended = 0
+    if historical_toots:
+        if TOOTS_HEADER_LINE not in existing_content:
+            new_lines.extend(["", TOOTS_HEADER_LINE, ""])
+
+        for label, url, preview in historical_toots:
+            # Show preview text and Mastodon link
+            line = f"- {label}: {preview[:256]}... ([mastodon]({url}))"
+            if line in existing_content or line in new_lines:
+                continue
+
+            new_lines.append(line)
+            toots_appended += 1
+
+    if not new_lines or (diary_appended == 0 and toots_appended == 0):
+        return (0, 0)
 
     block = "\n".join(new_lines) + "\n"
 
     if dry_run:
         print(block, end="")
-        return appended
+        return (diary_appended, toots_appended)
 
     if not existing_content.endswith("\n"):
         existing_content += "\n"
 
     today_note.write_text(existing_content + block, encoding="utf-8")
-    return appended
+    return (diary_appended, toots_appended)
 
 
 def resolve_today_note(vault_path: Path, diary_dir: str, target_date: dt.date) -> Path:
@@ -184,14 +256,33 @@ def main() -> None:
 
     today_note = resolve_today_note(vault_path, diary_dir, target_date)
     targets = gather_targets(target_date)
-    appended_count = append_links(today_note, vault_path, diary_dir, targets, dry_run=args.dry_run)
 
-    if appended_count == 0:
+    # Parse toots and find historical ones
+    toots = parse_toots(vault_path)
+    historical_toots = find_historical_toots(toots, targets, target_date)
+
+    diary_count, toots_count = append_links(
+        today_note, vault_path, diary_dir, targets, historical_toots, dry_run=args.dry_run
+    )
+
+    total_count = diary_count + toots_count
+
+    if total_count == 0:
         print("No historical entries found to append.")
     elif args.dry_run:
-        print(f"Dry run: would append {appended_count} historical link(s).")
+        parts = []
+        if diary_count > 0:
+            parts.append(f"{diary_count} diary link(s)")
+        if toots_count > 0:
+            parts.append(f"{toots_count} toot(s)")
+        print(f"Dry run: would append {' and '.join(parts)}.")
     else:
-        print(f"Appended {appended_count} historical link(s).")
+        parts = []
+        if diary_count > 0:
+            parts.append(f"{diary_count} diary link(s)")
+        if toots_count > 0:
+            parts.append(f"{toots_count} toot(s)")
+        print(f"Appended {' and '.join(parts)}.")
 
 
 if __name__ == "__main__":
