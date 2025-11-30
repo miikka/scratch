@@ -40,7 +40,11 @@ def get_completed_tasks_today():
                         if completionDate ≥ today then
                             set taskName to name of aTask
                             set taskNote to note of aTask
-                            set end of completedTasks to {taskName:taskName, taskNote:taskNote}
+                            set taskProject to ""
+                            if containing project of aTask is not missing value then
+                                set taskProject to name of containing project of aTask
+                            end if
+                            set end of completedTasks to {taskName:taskName, taskNote:taskNote, taskProject:taskProject}
                         end if
                     end if
                 end if
@@ -70,7 +74,7 @@ def parse_applescript_output(output):
         return []
 
     tasks = []
-    # AppleScript returns a list format like: taskName:Task 1, taskNote:Note 1, taskName:Task 2, taskNote:Note 2
+    # AppleScript returns a list format like: taskName:Task 1, taskNote:Note 1, taskProject:Project 1, taskName:Task 2, taskNote:Note 2, taskProject:Project 2
     # We need to parse this format
     lines = output.strip().split(', ')
 
@@ -80,10 +84,13 @@ def parse_applescript_output(output):
             if current_task:
                 tasks.append(current_task)
             task_name = line.split('taskName:', 1)[1]
-            current_task = {'name': task_name, 'note': ''}
+            current_task = {'name': task_name, 'note': '', 'project': ''}
         elif 'taskNote:' in line and current_task:
             task_note = line.split('taskNote:', 1)[1]
             current_task['note'] = task_note
+        elif 'taskProject:' in line and current_task:
+            task_project = line.split('taskProject:', 1)[1]
+            current_task['project'] = task_project
 
     if current_task:
         tasks.append(current_task)
@@ -99,7 +106,10 @@ def generate_markdown_content(tasks, today_str):
         lines.append("Tänään ei ole tullut mitään valmiiksi.")
     else:
         for task in tasks:
-            lines.append(f"- {task['name']}")
+            task_line = f"- {task['name']}"
+            if task.get('project') and task['project'] != 'missing value':
+                task_line += f" ({task['project']})"
+            lines.append(task_line)
             if task['note'] and task['note'] != 'missing value':
                 # Indent notes as a sub-item
                 note_lines = task['note'].split('\n')

@@ -5,9 +5,9 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Last updated sketches
 
+- [omnifocus-done](omnifocus-done) - Add the tasks you've completed today to your Obsidian daily note. (Python)
 - [throwback](throwback) - Add links to old diary entries in your Obsidian daily note. (Python)
 - [cas](cas) - Basic content-addressed storage on top of a file system. (Rust)
-- [omnifocus-done](omnifocus-done) - Add the tasks you've completed today to your Obsidian daily note. (Python)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 - [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
 
