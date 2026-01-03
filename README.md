@@ -5,11 +5,11 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Last updated sketches
 
-- [omnifocus-done](omnifocus-done) - Add the tasks you've completed today to your Obsidian daily note. (Python)
-- [throwback](throwback) - Add links to old diary entries in your Obsidian daily note. (Python)
-- [cas](cas) - Basic content-addressed storage on top of a file system. (Rust)
-- [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
+- [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
+- [chimp](chimp) - Floating point compression with the [Chimp] algorithm by Liakos et al. (Rust)
+- [cas](cas) - Basic content-addressed storage on top of a file system. (Rust)
+- [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
 
 ## All sketches
 
