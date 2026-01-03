@@ -2,6 +2,9 @@ import csv
 import sys
 from datetime import datetime
 
+SKIP_INTERNAL = False
+
+
 def convert_csv(input_file):
     # Define the output fieldnames
     output_fieldnames = ['Date', 'Payee', 'Memo', 'Outflow', 'Inflow']
@@ -16,12 +19,12 @@ def convert_csv(input_file):
 
         for row in reader:
             # Skip specified transactions
-            if (row['Tapahtumalaji'] == 'TILISIIRTO' and
+            if (SKIP_INTERNAL and row['Tapahtumalaji'] == 'TILISIIRTO' and
                 row['Maksaja'] == 'KOSKINEN MIIKKA ILMARI'):
                 continue
 
             # Convert date format (assuming input is DD.MM.YYYY)
-            date_str = row['Kirjauspäivä']
+            date_str = row['Maksupäivä']
             date_obj = datetime.strptime(date_str, '%d.%m.%Y')
             formatted_date = date_obj.strftime('%Y-%m-%d')
 
