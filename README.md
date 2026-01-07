@@ -5,11 +5,11 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Last updated sketches
 
+- [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
 - [chimp](chimp) - Floating point compression with the [Chimp] algorithm by Liakos et al. (Rust)
 - [cas](cas) - Basic content-addressed storage on top of a file system. (Rust)
-- [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
 
 ## All sketches
 
@@ -18,6 +18,7 @@ This is a scratchpad repo for sketches and small experiments.
 - [cas](cas) - Basic content-addressed storage on top of a file system. (Rust)
 - [chimp](chimp) - Floating point compression with the [Chimp] algorithm by Liakos et al. (Rust)
 - [contenteditable](contenteditable) - Playing around with `contenteditable` HTML elements. (HTML)
+- [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
 - [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
 - [malloc](malloc) - How do you allocate memory? (Rust)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
@@ -39,6 +40,7 @@ This is a scratchpad repo for sketches and small experiments.
 ### Python
 
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
+- [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 - [omnifocus-done](omnifocus-done) - Add the tasks you've completed today to your Obsidian daily note. (Python)
 - [python-reload](python-reload) - Attempt to reload Python code without restarting the interpreter. (Python)
@@ -64,6 +66,7 @@ This is a scratchpad repo for sketches and small experiments.
 ### ai-generated
 
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
+- [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 - [omnifocus-done](omnifocus-done) - Add the tasks you've completed today to your Obsidian daily note. (Python)
 - [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
@@ -74,6 +77,10 @@ This is a scratchpad repo for sketches and small experiments.
 - [chimp](chimp) - Floating point compression with the [Chimp] algorithm by Liakos et al. (Rust)
 - [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
 - [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
+
+### git
+
+- [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
 
 ### meta
 
