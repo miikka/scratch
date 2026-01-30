@@ -75,21 +75,21 @@ def parse_applescript_output(output):
 
     tasks = []
     # AppleScript returns a list format like: taskName:Task 1, taskNote:Note 1, taskProject:Project 1, taskName:Task 2, taskNote:Note 2, taskProject:Project 2
-    # We need to parse this format
-    lines = output.strip().split(', ')
+    # Split on ', ' only when followed by a field name to preserve commas in task names
+    parts = re.split(r', (?=task(?:Name|Note|Project):)', output.strip())
 
     current_task = {}
-    for line in lines:
-        if 'taskName:' in line:
+    for part in parts:
+        if part.startswith('taskName:'):
             if current_task:
                 tasks.append(current_task)
-            task_name = line.split('taskName:', 1)[1]
+            task_name = part.split('taskName:', 1)[1]
             current_task = {'name': task_name, 'note': '', 'project': ''}
-        elif 'taskNote:' in line and current_task:
-            task_note = line.split('taskNote:', 1)[1]
+        elif part.startswith('taskNote:') and current_task:
+            task_note = part.split('taskNote:', 1)[1]
             current_task['note'] = task_note
-        elif 'taskProject:' in line and current_task:
-            task_project = line.split('taskProject:', 1)[1]
+        elif part.startswith('taskProject:') and current_task:
+            task_project = part.split('taskProject:', 1)[1]
             current_task['project'] = task_project
 
     if current_task:
