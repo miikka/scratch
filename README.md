@@ -5,14 +5,15 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Last updated sketches
 
+- [agent](agent) - A simple coding agent. (Python)
 - [selfrepair](selfrepair) - Use LLMs to repair broken code on the fly. (Python)
 - [omnifocus-done](omnifocus-done) - Add the tasks you've completed today to your Obsidian daily note. (Python)
 - [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
-- [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
 
 ## All sketches
 
+- [agent](agent) - A simple coding agent. (Python)
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [cable-car](cable-car) - Emoji cable car. (HTML)
 - [cas](cas) - Basic content-addressed storage on top of a file system. (Rust)
@@ -40,6 +41,7 @@ This is a scratchpad repo for sketches and small experiments.
 
 ### Python
 
+- [agent](agent) - A simple coding agent. (Python)
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
@@ -67,6 +69,7 @@ This is a scratchpad repo for sketches and small experiments.
 
 ### ai-generated
 
+- [agent](agent) - A simple coding agent. (Python)
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
