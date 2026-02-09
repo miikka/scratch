@@ -50,12 +50,10 @@ def _ask_llm(func_source, error, args, kwargs):
     return reply
 
 
-def selfrepair(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception as e:
+def selfrepair(func=None, *, max_retries=3):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
             source_file = inspect.getfile(func)
             with open(source_file) as f:
                 full_source = f.read()
@@ -63,20 +61,37 @@ def selfrepair(func):
             raw_source = inspect.getsource(func)
             _decorators, func_body = _extract_func_body(raw_source)
 
-            print(f"[selfrepair] {func.__name__} raised {type(e).__name__}: {e}")
-            print(f"[selfrepair] Asking LLM for a fix...")
+            current_body = func_body
+            current_func = func
+            for attempt in range(1 + max_retries):
+                try:
+                    return current_func(*args, **kwargs)
+                except Exception as e:
+                    remaining = max_retries - attempt
+                    print(f"[selfrepair] {func.__name__} raised {type(e).__name__}: {e}")
+                    if remaining == 0:
+                        print(f"[selfrepair] No retries left, giving up.")
+                        raise
+                    print(f"[selfrepair] Asking LLM for a fix ({remaining} retries left)...")
 
-            fixed_body = _ask_llm(func_body, e, args, kwargs)
-            if not fixed_body.endswith("\n"):
-                fixed_body += "\n"
+                    fixed_body = _ask_llm(current_body, e, args, kwargs)
+                    if not fixed_body.endswith("\n"):
+                        fixed_body += "\n"
 
-            new_source = full_source.replace(func_body, fixed_body, 1)
-            with open(source_file, "w") as f:
-                f.write(new_source)
-            print(f"[selfrepair] Patched {source_file}")
+                    with open(source_file) as f:
+                        full_source = f.read()
+                    new_source = full_source.replace(current_body, fixed_body, 1)
+                    with open(source_file, "w") as f:
+                        f.write(new_source)
+                    print(f"[selfrepair] Patched {source_file}")
 
-            ns = {}
-            exec(compile(fixed_body, source_file, "exec"), func.__globals__, ns)
-            return ns[func.__name__](*args, **kwargs)
+                    current_body = fixed_body
+                    ns = {}
+                    exec(compile(fixed_body, source_file, "exec"), func.__globals__, ns)
+                    current_func = ns[func.__name__]
 
-    return wrapper
+        return wrapper
+
+    if func is not None:
+        return decorator(func)
+    return decorator

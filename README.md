@@ -5,11 +5,11 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Last updated sketches
 
+- [selfrepair](selfrepair) - Use LLMs to repair broken code on the fly. (Python)
+- [omnifocus-done](omnifocus-done) - Add the tasks you've completed today to your Obsidian daily note. (Python)
 - [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
-- [chimp](chimp) - Floating point compression with the [Chimp] algorithm by Liakos et al. (Rust)
-- [cas](cas) - Basic content-addressed storage on top of a file system. (Rust)
 
 ## All sketches
 
@@ -27,6 +27,7 @@ This is a scratchpad repo for sketches and small experiments.
 - [python-reload](python-reload) - Attempt to reload Python code without restarting the interpreter. (Python)
 - [red-green-blue-gene](red-green-blue-gene) - Generate colorful graphics. (HTML)
 - [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
+- [selfrepair](selfrepair) - Use LLMs to repair broken code on the fly. (Python)
 - [throwback](throwback) - Add links to old diary entries in your Obsidian daily note. (Python)
 
 ## Sketches by language
@@ -44,6 +45,7 @@ This is a scratchpad repo for sketches and small experiments.
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 - [omnifocus-done](omnifocus-done) - Add the tasks you've completed today to your Obsidian daily note. (Python)
 - [python-reload](python-reload) - Attempt to reload Python code without restarting the interpreter. (Python)
+- [selfrepair](selfrepair) - Use LLMs to repair broken code on the fly. (Python)
 - [throwback](throwback) - Add links to old diary entries in your Obsidian daily note. (Python)
 
 ### Rust
@@ -70,6 +72,7 @@ This is a scratchpad repo for sketches and small experiments.
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 - [omnifocus-done](omnifocus-done) - Add the tasks you've completed today to your Obsidian daily note. (Python)
 - [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
+- [selfrepair](selfrepair) - Use LLMs to repair broken code on the fly. (Python)
 - [throwback](throwback) - Add links to old diary entries in your Obsidian daily note. (Python)
 
 ### floating-point-compression
