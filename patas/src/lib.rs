@@ -40,6 +40,12 @@ fn count_leading(x: u64) -> u8 {
     count
 }
 
+fn diff128(a: u8, b: u8) -> u8 {
+    let a1 = a as i16;
+    let b1 = b as i16;
+    ((a1 - b1) % 128) as u8
+}
+
 pub fn encode(input: &[f64]) -> Bytes {
     let mut buf = BytesMut::new();
 
@@ -56,7 +62,7 @@ pub fn encode(input: &[f64]) -> Bytes {
     ringbuf[0] = prev_bits;
     lookup[(prev_bits & 0x3FFF) as usize] = 0;
 
-    let mut index = 1;
+    let mut index: usize = 1;
     for curr in input[1..].iter() {
         let curr_bits = curr.to_bits();
         let lookup_index = lookup[(curr_bits & 0x3FFF) as usize];
@@ -67,7 +73,7 @@ pub fn encode(input: &[f64]) -> Bytes {
             ringbuf
                 .iter()
                 .enumerate()
-                .filter(|(i, _)| (*i as u8) < index)
+                .filter(|(i, _)| *i < index)
                 .max_by_key(|(_, val)| count_trailing(curr_bits ^ *val))
                 .unwrap()
                 .0 as u8
@@ -85,7 +91,7 @@ pub fn encode(input: &[f64]) -> Bytes {
             (trailing, meaningful_bytes - 1)
         };
 
-        let ref_index = index - best_index;
+        let ref_index = diff128(((index - 1) % 128) as u8, best_index);
         let header: u16 = ((ref_index as u16) << 9)
             | ((meaningful_bytes as u16) << 6)
             | (trailing & 0b111111) as u16;
@@ -109,7 +115,7 @@ pub fn encode(input: &[f64]) -> Bytes {
         }
 
         ringbuf[(index % 128) as usize] = curr_bits;
-        lookup[(curr_bits & 0x3FFF) as usize] = index % 128;
+        lookup[(curr_bits & 0x3FFF) as usize] = (index % 128) as u8;
         index += 1;
     }
 
@@ -133,7 +139,7 @@ pub fn decode(input: &[u8], count: usize) -> Vec<f64> {
 
         println!("header = {:0b}", header);
 
-        let ref_index = (header >> 9) as usize;
+        let ref_index = (header >> 9) as usize + 1;
         let best_index = index - ref_index;
 
         assert!(
@@ -162,7 +168,7 @@ pub fn decode(input: &[u8], count: usize) -> Vec<f64> {
         );
         println!("xor = {:064b}", xor);
 
-        let best_bits = ringbuf[best_index as usize];
+        let best_bits = ringbuf[best_index % 128];
         let curr_bits = best_bits ^ xor;
         let curr = f64::from_bits(curr_bits);
 
@@ -191,6 +197,13 @@ mod tests {
         // Leaving NaNs out of the generated values because prop_assert_eq believes NaN != NaN (as it should in general)
         #[test]
         fn prop_read_write(input in prop::collection::vec(prop::num::f64::POSITIVE | prop::num::f64::NEGATIVE | prop::num::f64::NORMAL | prop::num::f64::SUBNORMAL | prop::num::f64::ZERO, 1..100)) {
+            let bytes = encode(&input);
+            let output = decode(&bytes, input.len());
+            prop_assert_eq!(&input, &output);
+        }
+
+        #[test]
+        fn prop_read_write_long(input in prop::collection::vec(prop::num::f64::POSITIVE | prop::num::f64::NEGATIVE | prop::num::f64::NORMAL | prop::num::f64::SUBNORMAL | prop::num::f64::ZERO, 200..300)) {
             let bytes = encode(&input);
             let output = decode(&bytes, input.len());
             prop_assert_eq!(&input, &output);
