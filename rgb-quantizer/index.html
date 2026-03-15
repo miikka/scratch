@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RGB Quantizer</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: #1a1a1a;
+      color: #e0e0e0;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 24px;
+      background: #252525;
+      padding: 16px 20px;
+      border-radius: 10px;
+    }
+
+    .sliders-row {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 20px;
+      align-items: flex-end;
+    }
+
+    .buttons-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      border-top: 1px solid #333;
+      padding-top: 12px;
+    }
+
+    .channel {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 180px;
+    }
+
+    .channel label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .channel.r label { color: #ff6b6b; }
+    .channel.g label { color: #69db7c; }
+    .channel.b label { color: #74c0fc; }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 120px;
+      height: 4px;
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .channel.r input[type="range"] { accent-color: #ff6b6b; background: #3a2525; }
+    .channel.g input[type="range"] { accent-color: #69db7c; background: #253a28; }
+    .channel.b input[type="range"] { accent-color: #74c0fc; background: #25303a; }
+    .channel.all input[type="range"] { accent-color: #ccc; background: #333; width: 160px; }
+
+    .bits-display {
+      font-size: 0.85rem;
+      font-weight: 600;
+      min-width: 48px;
+      color: #ccc;
+    }
+
+    .levels-display {
+      font-size: 0.72rem;
+      color: #888;
+    }
+
+    .upload-btn {
+      padding: 8px 16px;
+      background: #333;
+      border: 1px solid #444;
+      color: #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .upload-btn:hover { background: #3a3a3a; }
+
+    #fileInput { display: none; }
+
+    .reset-btn {
+      padding: 8px 16px;
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      color: #888;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .reset-btn:hover { background: #303030; color: #aaa; }
+
+    .canvases {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .canvas-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .canvas-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #777;
+    }
+
+    canvas {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      display: block;
+      image-rendering: pixelated;
+    }
+
+    .info-bar {
+      margin-top: 8px;
+      font-size: 0.72rem;
+      color: #555;
+    }
+
+    body.drag-over::after {
+      content: 'Drop image';
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 600;
+      color: #fff;
+      background: rgba(74, 144, 252, 0.25);
+      border: 3px dashed #74c0fc;
+      border-radius: 12px;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    @media (max-width: 640px) {
+      .canvases { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <h1>RGB Quantizer</h1>
+
+  <div class="controls">
+    <div class="sliders-row">
+      <div class="channel all">
+        <label style="color:#ccc;">All channels</label>
+        <div class="slider-row">
+          <input type="range" id="bitsAll" min="1" max="8" value="8">
+          <span class="bits-display"><span id="valAll">8</span> bits</span>
+        </div>
+        <div class="levels-display"><span id="levelsAll">256</span> levels</div>
+      </div>
+
+      <div style="width:1px; background:#333; align-self:stretch; margin: 0 4px;"></div>
+
+      <div class="channel r">
+        <label>Red</label>
+        <div class="slider-row">
+          <input type="range" id="bitsR" min="1" max="8" value="8">
+          <span class="bits-display"><span id="valR">8</span> bits</span>
+        </div>
+        <div class="levels-display"><span id="levelsR">256</span> levels</div>
+      </div>
+
+      <div class="channel g">
+        <label>Green</label>
+        <div class="slider-row">
+          <input type="range" id="bitsG" min="1" max="8" value="8">
+          <span class="bits-display"><span id="valG">8</span> bits</span>
+        </div>
+        <div class="levels-display"><span id="levelsG">256</span> levels</div>
+      </div>
+
+      <div class="channel b">
+        <label>Blue</label>
+        <div class="slider-row">
+          <input type="range" id="bitsB" min="1" max="8" value="8">
+          <span class="bits-display"><span id="valB">8</span> bits</span>
+        </div>
+        <div class="levels-display"><span id="levelsB">256</span> levels</div>
+      </div>
+    </div>
+
+    <div class="buttons-row">
+      <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Upload image</button>
+      <input type="file" id="fileInput" accept="image/*">
+      <button class="reset-btn" onclick="loadDefaultPhoto()">Default photo</button>
+      <button class="reset-btn" onclick="makeDefaultImage()">Color gradient</button>
+      <button class="reset-btn" onclick="resetBits()">Reset bits</button>
+    </div>
+  </div>
+
+  <div class="canvases">
+    <div class="canvas-wrap">
+      <div class="canvas-label">Original</div>
+      <canvas id="original"></canvas>
+      <div class="info-bar" id="infoOrig"></div>
+    </div>
+    <div class="canvas-wrap">
+      <div class="canvas-label">Quantized</div>
+      <canvas id="quantized"></canvas>
+      <div class="info-bar" id="infoQuant"></div>
+    </div>
+  </div>
+
+  <script>
+    const origCanvas = document.getElementById('original');
+    const qCanvas = document.getElementById('quantized');
+    const origCtx = origCanvas.getContext('2d');
+    const qCtx = qCanvas.getContext('2d');
+
+    let sourceImage = null;
+
+    function getBits() {
+      return {
+        r: parseInt(document.getElementById('bitsR').value),
+        g: parseInt(document.getElementById('bitsG').value),
+        b: parseInt(document.getElementById('bitsB').value),
+      };
+    }
+
+    function humanBytes(bytes) {
+      if (bytes < 1024) return `${bytes} B`;
+      if (bytes < 1024 ** 2) return `${(bytes / 1024).toFixed(1)} KB`;
+      return `${(bytes / 1024 ** 2).toFixed(2)} MB`;
+    }
+
+    function quantizeValue(v, bits) {
+      if (bits >= 8) return v;
+      const levels = (1 << bits);
+      const step = 255 / (levels - 1);
+      return Math.round(Math.round(v / step) * step);
+    }
+
+    function updateLabels() {
+      const { r, g, b } = getBits();
+      document.getElementById('valR').textContent = r;
+      document.getElementById('valG').textContent = g;
+      document.getElementById('valB').textContent = b;
+      document.getElementById('levelsR').textContent = 1 << r;
+      document.getElementById('levelsG').textContent = 1 << g;
+      document.getElementById('levelsB').textContent = 1 << b;
+
+      // Update master label: show value only if all channels match
+      const allEl = document.getElementById('bitsAll');
+      const allVal = parseInt(allEl.value);
+      document.getElementById('valAll').textContent = allVal;
+      document.getElementById('levelsAll').textContent = 1 << allVal;
+    }
+
+    function render() {
+      if (!sourceImage) return;
+      updateLabels();
+
+      const { r: bR, g: bG, b: bB } = getBits();
+      const w = origCanvas.width;
+      const h = origCanvas.height;
+
+      const src = origCtx.getImageData(0, 0, w, h);
+      const dst = qCtx.createImageData(w, h);
+      const d = src.data;
+      const o = dst.data;
+
+      for (let i = 0; i < d.length; i += 4) {
+        o[i]     = quantizeValue(d[i],     bR);
+        o[i + 1] = quantizeValue(d[i + 1], bG);
+        o[i + 2] = quantizeValue(d[i + 2], bB);
+        o[i + 3] = d[i + 3];
+      }
+
+      qCtx.putImageData(dst, 0, 0);
+
+      const totalColors = (1 << bR) * (1 << bG) * (1 << bB);
+      const quantBpp = bR + bG + bB;
+      const pixels = w * h;
+      document.getElementById('infoOrig').textContent =
+        `24 bits/pixel · ${humanBytes(pixels * 24 / 8)}`;
+      document.getElementById('infoQuant').textContent =
+        `${quantBpp} bits/pixel · ${humanBytes(pixels * quantBpp / 8)} · up to ${totalColors.toLocaleString()} colors`;
+    }
+
+    function loadImage(img) {
+      sourceImage = img;
+      const maxW = 1200;
+      let w = img.naturalWidth || img.width;
+      let h = img.naturalHeight || img.height;
+      if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+
+      origCanvas.width = qCanvas.width = w;
+      origCanvas.height = qCanvas.height = h;
+
+      origCtx.drawImage(img, 0, 0, w, h);
+      render();
+    }
+
+    function resetBits() {
+      ['bitsAll', 'bitsR', 'bitsG', 'bitsB'].forEach(id => document.getElementById(id).value = 8);
+      render();
+    }
+
+    // Master slider drives all three channels
+    document.getElementById('bitsAll').addEventListener('input', function() {
+      const v = this.value;
+      document.getElementById('bitsR').value = v;
+      document.getElementById('bitsG').value = v;
+      document.getElementById('bitsB').value = v;
+      render();
+    });
+
+    // Individual sliders
+    ['bitsR', 'bitsG', 'bitsB'].forEach(id => {
+      document.getElementById(id).addEventListener('input', render);
+    });
+
+    function loadFile(file) {
+      if (!file || !file.type.startsWith('image/')) return;
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => { loadImage(img); URL.revokeObjectURL(url); };
+      img.src = url;
+    }
+
+    // File upload
+    document.getElementById('fileInput').addEventListener('change', e => loadFile(e.target.files[0]));
+
+    // Drag-and-drop
+    document.addEventListener('dragover', e => { e.preventDefault(); document.body.classList.add('drag-over'); });
+    document.addEventListener('dragleave', e => { if (e.relatedTarget === null) document.body.classList.remove('drag-over'); });
+    document.addEventListener('drop', e => {
+      e.preventDefault();
+      document.body.classList.remove('drag-over');
+      loadFile(e.dataTransfer.files[0]);
+    });
+
+    // Generate default gradient image
+    function makeDefaultImage() {
+      const w = 512, h = 340;
+      const offscreen = document.createElement('canvas');
+      offscreen.width = w; offscreen.height = h;
+      const ctx = offscreen.getContext('2d');
+
+      // Color wheel + brightness sweep background
+      for (let x = 0; x < w; x++) {
+        for (let y = 0; y < h; y++) {
+          const hue = (x / w) * 360;
+          const sat = 100;
+          const light = 10 + (y / h) * 80;
+          ctx.fillStyle = `hsl(${hue},${sat}%,${light}%)`;
+          ctx.fillRect(x, y, 1, 1);
+        }
+      }
+
+      // Overlay some gray ramp in a strip
+      const stripY = Math.round(h * 0.72);
+      const stripH = Math.round(h * 0.18);
+      for (let x = 0; x < w; x++) {
+        const v = Math.round((x / (w - 1)) * 255);
+        ctx.fillStyle = `rgb(${v},${v},${v})`;
+        ctx.fillRect(x, stripY, 1, stripH);
+      }
+
+      const img = new Image();
+      img.onload = () => loadImage(img);
+      img.src = offscreen.toDataURL();
+    }
+
+    async function loadDefaultPhoto() {
+      try {
+        const res = await fetch('default.jpg');
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+        img.onload = () => { loadImage(img); URL.revokeObjectURL(url); };
+        img.src = url;
+      } catch {
+        makeDefaultImage();
+      }
+    }
+
+    loadDefaultPhoto();
+  </script>
+</body>
+</html>
