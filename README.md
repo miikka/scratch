@@ -5,15 +5,16 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Last updated sketches
 
+- [agent2md](agent2md) - Export the session logs from Claude Code and Codex into a Markdown files. (Python)
+- [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [rgb-quantizer](rgb-quantizer) - Quantize the RGB channels of an image. (HTML)
 - [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
 - [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
-- [agent](agent) - A simple coding agent. (Python)
-- [selfrepair](selfrepair) - Use LLMs to repair broken code on the fly. (Python)
 
 ## All sketches
 
 - [agent](agent) - A simple coding agent. (Python)
+- [agent2md](agent2md) - Export the session logs from Claude Code and Codex into a Markdown files. (Python)
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [cable-car](cable-car) - Emoji cable car. (HTML)
 - [cas](cas) - Basic content-addressed storage on top of a file system. (Rust)
@@ -44,6 +45,7 @@ This is a scratchpad repo for sketches and small experiments.
 ### Python
 
 - [agent](agent) - A simple coding agent. (Python)
+- [agent2md](agent2md) - Export the session logs from Claude Code and Codex into a Markdown files. (Python)
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
@@ -72,6 +74,7 @@ This is a scratchpad repo for sketches and small experiments.
 ### ai-generated
 
 - [agent](agent) - A simple coding agent. (Python)
+- [agent2md](agent2md) - Export the session logs from Claude Code and Codex into a Markdown files. (Python)
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
