@@ -5,11 +5,11 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Last updated sketches
 
+- [create-dotslash](create-dotslash) - Create [DotSlash] files from GitHub releases. (Python)
 - [check-coverage](check-coverage) - Coverage gate for cargo-llvm-cov output. (Python)
 - [agent2md](agent2md) - Export the session logs from Claude Code and Codex into a Markdown files. (Python)
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [rgb-quantizer](rgb-quantizer) - Quantize the RGB channels of an image. (HTML)
-- [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
 
 ## All sketches
 
@@ -21,6 +21,7 @@ This is a scratchpad repo for sketches and small experiments.
 - [check-coverage](check-coverage) - Coverage gate for cargo-llvm-cov output. (Python)
 - [chimp](chimp) - Floating point compression with the [Chimp] algorithm by Liakos et al. (Rust)
 - [contenteditable](contenteditable) - Playing around with `contenteditable` HTML elements. (HTML)
+- [create-dotslash](create-dotslash) - Create [DotSlash] files from GitHub releases. (Python)
 - [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
 - [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
 - [malloc](malloc) - How do you allocate memory? (Rust)
@@ -49,6 +50,7 @@ This is a scratchpad repo for sketches and small experiments.
 - [agent2md](agent2md) - Export the session logs from Claude Code and Codex into a Markdown files. (Python)
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [check-coverage](check-coverage) - Coverage gate for cargo-llvm-cov output. (Python)
+- [create-dotslash](create-dotslash) - Create [DotSlash] files from GitHub releases. (Python)
 - [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 - [omnifocus-done](omnifocus-done) - Add the tasks you've completed today to your Obsidian daily note. (Python)
@@ -79,6 +81,7 @@ This is a scratchpad repo for sketches and small experiments.
 - [agent2md](agent2md) - Export the session logs from Claude Code and Codex into a Markdown files. (Python)
 - [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [check-coverage](check-coverage) - Coverage gate for cargo-llvm-cov output. (Python)
+- [create-dotslash](create-dotslash) - Create [DotSlash] files from GitHub releases. (Python)
 - [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 - [omnifocus-done](omnifocus-done) - Add the tasks you've completed today to your Obsidian daily note. (Python)
