@@ -47,19 +47,30 @@ def print_notes_index(notes):
     if not notes:
         print("No notes found with valid date patterns.")
         return
-    
-    # Obsidian table header
-    print("| Päivämäärä | Sijainti | Tiedosto |")
-    print("|------------|----------|----------|")
-    
+
+    notes_by_year = {}
     for note in notes:
-        date_str = note['date'].strftime('%Y-%m-%d')
-        # Create Obsidian-style link with directory path
-        file_without_ext = note['filename'][:-3]  # Remove .md extension
-        obsidian_link = f"[[{note['location']}/{file_without_ext}]]"
-        print(f"| {date_str} | {note['location']} | {obsidian_link} |")
-    
-    print(f"\n**Yhteensä:** {len(notes)} kiipeilysessiota")
+        year = note['date'].year
+        notes_by_year.setdefault(year, []).append(note)
+
+    for i, year in enumerate(sorted(notes_by_year.keys(), reverse=True)):
+        year_notes = notes_by_year[year]
+        if i > 0:
+            print()
+        print(f"## {year}")
+        print()
+        print("| Päivämäärä | Sijainti | Tiedosto |")
+        print("|------------|----------|----------|")
+
+        for note in year_notes:
+            date_str = note['date'].strftime('%Y-%m-%d')
+            file_without_ext = note['filename'][:-3]
+            obsidian_link = f"[[{note['location']}/{file_without_ext}]]"
+            print(f"| {date_str} | {note['location']} | {obsidian_link} |")
+
+        print(f"\n**Yhteensä:** {len(year_notes)} kiipeilysessiota")
+
+    print(f"\n**Kaikki yhteensä:** {len(notes)} kiipeilysessiota")
 
 def main():
     """Main function to generate and display notes index"""
