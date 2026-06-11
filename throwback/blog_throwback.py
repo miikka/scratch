@@ -4,6 +4,10 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import hashlib
+import os
+import sys
+import time
 import urllib.request
 import xml.etree.ElementTree as ET
 from email.utils import parsedate_to_datetime
@@ -13,12 +17,41 @@ from typing import List, Tuple
 
 HEADER_LINE = "## Vanhat blogipostaukset"
 FEED_URL = "https://quanttype.net/index.xml"
+CACHE_MAX_AGE = dt.timedelta(days=7)
 
 
-def fetch_feed(url: str) -> bytes:
+def cache_dir() -> Path:
+    """Return the system cache directory for this tool."""
+    if sys.platform == "darwin":
+        base = Path.home() / "Library" / "Caches"
+    elif sys.platform == "win32":
+        base = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local"))
+    else:
+        base = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache"))
+    return base / "blog-throwback"
+
+
+def _download_feed(url: str) -> bytes:
     request = urllib.request.Request(url, headers={"User-Agent": "blog-throwback"})
     with urllib.request.urlopen(request, timeout=30) as response:
         return response.read()
+
+
+def fetch_feed(url: str, *, max_age: dt.timedelta = CACHE_MAX_AGE) -> bytes:
+    """Fetch the feed, using a cached copy younger than ``max_age`` if available."""
+    if max_age <= dt.timedelta(0):
+        return _download_feed(url)
+
+    cache_file = cache_dir() / (hashlib.sha256(url.encode()).hexdigest() + ".xml")
+    if cache_file.exists():
+        age = time.time() - cache_file.stat().st_mtime
+        if age < max_age.total_seconds():
+            return cache_file.read_bytes()
+
+    feed_bytes = _download_feed(url)
+    cache_file.parent.mkdir(parents=True, exist_ok=True)
+    cache_file.write_bytes(feed_bytes)
+    return feed_bytes
 
 
 def parse_feed(feed_bytes: bytes) -> List[Tuple[str, str, dt.date]]:
@@ -138,6 +171,11 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Print the Markdown that would be appended without modifying the file.",
     )
+    parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        help="Bypass the cache and always download a fresh copy of the feed.",
+    )
     return parser.parse_args()
 
 
@@ -153,7 +191,8 @@ def main() -> None:
 
     today_note = resolve_today_note(vault_path, diary_dir, target_date)
 
-    feed_bytes = fetch_feed(args.feed_url)
+    max_age = dt.timedelta(0) if args.no_cache else CACHE_MAX_AGE
+    feed_bytes = fetch_feed(args.feed_url, max_age=max_age)
     items = parse_feed(feed_bytes)
     posts = find_throwbacks(items, target_date)
 
