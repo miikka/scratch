@@ -19,13 +19,20 @@ def convert_csv(input_file):
             outflow = abs(amount) if amount < 0 else ''
             inflow = amount if amount > 0 else ''
 
-            memo = row['Tapahtumateksti'].strip()
-            if not memo:
-                memo = row['Tapahtumatyyppi']
+            security = row['Arvopaperi'].strip()
+
+            if row['Tapahtumatyyppi'].strip().upper() == 'OSTO':
+                payee = 'Nordnet osto'
+                memo = security
+            else:
+                payee = security
+                memo = row['Tapahtumateksti'].strip()
+                if not memo:
+                    memo = row['Tapahtumatyyppi']
 
             output_row = {
                 'Date': date,
-                'Payee': row['Arvopaperi'],
+                'Payee': payee,
                 'Memo': memo,
                 'Outflow': outflow,
                 'Inflow': inflow,
