@@ -1,8 +1,7 @@
 use chrono::{DateTime, Utc};
 use clap::Parser;
-use git2::Repository;
-use std::collections::HashMap;
 use std::path::{Path, PathBuf};
+use std::process::Command;
 
 const IGNORE_DIRS: &'static [&str] = &["target"];
 
@@ -27,7 +26,7 @@ struct ProjectInfo {
 }
 
 impl ProjectInfo {
-    fn from_dir(path: &Path, commit_times: &HashMap<String, DateTime<Utc>>) -> Self {
+    fn from_dir(path: &Path, root: &Path) -> Self {
         let dir_name = path
             .file_name()
             .unwrap_or_default()
@@ -107,10 +106,7 @@ impl ProjectInfo {
         }
 
         // Projects without any commits yet fall back to the newest file mtime
-        let last_modified = commit_times
-            .get(&dir_name)
-            .copied()
-            .unwrap_or_else(|| newest_mtime(path));
+        let last_modified = last_commit_time(root, &dir_name).unwrap_or_else(|| newest_mtime(path));
 
         ProjectInfo {
             name: dir_name,
@@ -122,55 +118,24 @@ impl ProjectInfo {
     }
 }
 
-/// Find the time of the newest commit touching each top-level directory under `root`.
-fn last_commit_times(root: &Path) -> HashMap<String, DateTime<Utc>> {
-    let repo = Repository::discover(root).expect("failed to open git repository");
-    let workdir = repo
-        .workdir()
-        .expect("git repository has no working directory");
-    let workdir = workdir.canonicalize().expect("failed to resolve repo path");
-    let root = root.canonicalize().expect("failed to resolve scratch path");
-    let prefix = root
-        .strip_prefix(&workdir)
-        .expect("scratch path is not inside the git repository");
-
-    let mut revwalk = repo.revwalk().expect("failed to walk git history");
-    revwalk.push_head().expect("failed to read HEAD");
-
-    let mut times = HashMap::new();
-    for oid in revwalk {
-        let commit = repo
-            .find_commit(oid.expect("failed to walk git history"))
-            .expect("failed to read commit");
-        let tree = commit.tree().expect("failed to read commit tree");
-        let parent_tree = commit
-            .parents()
-            .next()
-            .map(|p| p.tree().expect("failed to read parent tree"));
-        let diff = repo
-            .diff_tree_to_tree(parent_tree.as_ref(), Some(&tree), None)
-            .expect("failed to diff commit");
-        let time = DateTime::from_timestamp(commit.time().seconds(), 0).unwrap_or_default();
-
-        for delta in diff.deltas() {
-            let Some(file_path) = delta.new_file().path().or(delta.old_file().path()) else {
-                continue;
-            };
-            let Ok(relative) = file_path.strip_prefix(prefix) else {
-                continue;
-            };
-            let mut components = relative.components();
-            // Only files inside a directory count; skip top-level files like README.md
-            if let (Some(dir), Some(_)) = (components.next(), components.next()) {
-                let dir = dir.as_os_str().to_string_lossy().to_string();
-                let entry = times.entry(dir).or_insert(time);
-                if time > *entry {
-                    *entry = time;
-                }
-            }
-        }
+/// Find the newest commit touching a project directory.
+fn last_commit_time(root: &Path, dir_name: &str) -> Option<DateTime<Utc>> {
+    let output = Command::new("git")
+        .arg("-C")
+        .arg(root)
+        .args(["log", "-1", "--format=%ct", "--"])
+        .arg(dir_name)
+        .output()
+        .ok()?;
+    if !output.status.success() {
+        return None;
     }
-    times
+    let timestamp = std::str::from_utf8(&output.stdout)
+        .ok()?
+        .trim()
+        .parse()
+        .ok()?;
+    DateTime::from_timestamp(timestamp, 0)
 }
 
 /// Newest modification time of any file under `path`, skipping ignored and hidden directories.
@@ -211,7 +176,6 @@ fn main() {
     let cli = Cli::parse();
 
     let mut project_info: Vec<ProjectInfo> = vec![];
-    let commit_times = last_commit_times(&cli.path);
 
     let result = std::fs::read_dir(&cli.path).unwrap();
     for entry in result {
@@ -219,7 +183,7 @@ fn main() {
             if entry.file_type().unwrap().is_dir() {
                 if let Some(file_name) = entry.file_name().to_str() {
                     if !IGNORE_DIRS.contains(&file_name) && !file_name.starts_with('.') {
-                        let info = ProjectInfo::from_dir(&entry.path(), &commit_times);
+                        let info = ProjectInfo::from_dir(&entry.path(), &cli.path);
                         project_info.push(info);
                     }
                 }
