@@ -5,11 +5,11 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Last updated sketches
 
-- [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
 - [mdquote](mdquote) - Print a Markdown quote of a social media post. (Python)
+- [bank-to-ynab](bank-to-ynab) - Scripts for converting Finnish bank CSV files to the format accepted by [YNAB]. (Python)
 - [throwback](throwback) - Add links to old diary entries in your Obsidian daily note. (Python)
-- [malloc](malloc) - How do you allocate memory? (Rust)
-- [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
+- [leb128](leb128) - [LEB128] variable-length encoding for integers. (Rust)
+- [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 
 ## All sketches
 
