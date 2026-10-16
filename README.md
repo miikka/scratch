@@ -5,11 +5,11 @@ This is a scratchpad repo for sketches and small experiments.
 
 ## Last updated sketches
 
-- [leb128](leb128) - [LEB128] variable-length encoding for integers. (Rust)
-- [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
-- [create-dotslash](create-dotslash) - Create [DotSlash] files from GitHub releases. (Python)
-- [check-coverage](check-coverage) - Coverage gate for cargo-llvm-cov output. (Python)
-- [agent2md](agent2md) - Export the session logs from Claude Code and Codex into a Markdown files. (Python)
+- [scratch-index](scratch-index) - Build a Markdown index of the scratch projects. (Rust)
+- [mdquote](mdquote) - Print a Markdown quote of a social media post. (Python)
+- [throwback](throwback) - Add links to old diary entries in your Obsidian daily note. (Python)
+- [malloc](malloc) - How do you allocate memory? (Rust)
+- [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
 
 ## All sketches
 
@@ -26,6 +26,7 @@ This is a scratchpad repo for sketches and small experiments.
 - [gorilla](gorilla) - Floating point compression from Facebook's [Gorilla] database. (Rust)
 - [leb128](leb128) - [LEB128] variable-length encoding for integers. (Rust)
 - [malloc](malloc) - How do you allocate memory? (Rust)
+- [mdquote](mdquote) - Print a Markdown quote of a social media post. (Python)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 - [omnifocus-done](omnifocus-done) - Add the tasks you've completed today to your Obsidian daily note. (Python)
 - [patas](patas) - Floating point compression with the [Patas] algorithm from DuckDB project. (Rust)
@@ -53,6 +54,7 @@ This is a scratchpad repo for sketches and small experiments.
 - [check-coverage](check-coverage) - Coverage gate for cargo-llvm-cov output. (Python)
 - [create-dotslash](create-dotslash) - Create [DotSlash] files from GitHub releases. (Python)
 - [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
+- [mdquote](mdquote) - Print a Markdown quote of a social media post. (Python)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 - [omnifocus-done](omnifocus-done) - Add the tasks you've completed today to your Obsidian daily note. (Python)
 - [python-reload](python-reload) - Attempt to reload Python code without restarting the interpreter. (Python)
@@ -85,6 +87,7 @@ This is a scratchpad repo for sketches and small experiments.
 - [check-coverage](check-coverage) - Coverage gate for cargo-llvm-cov output. (Python)
 - [create-dotslash](create-dotslash) - Create [DotSlash] files from GitHub releases. (Python)
 - [git-blamegrep](git-blamegrep) - A command-line tool for searching a git repository for lines authored by specific authors. (Python)
+- [mdquote](mdquote) - Print a Markdown quote of a social media post. (Python)
 - [notes-index](notes-index) - Scripts for indexing my Obsidian notes. (Python)
 - [omnifocus-done](omnifocus-done) - Add the tasks you've completed today to your Obsidian daily note. (Python)
 - [rgb-quantizer](rgb-quantizer) - Quantize the RGB channels of an image. (HTML)
